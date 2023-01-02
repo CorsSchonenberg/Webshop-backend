@@ -28,23 +28,22 @@ public class OrderController {
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postChargingstation(@RequestBody Order order) {
+    public ApiResponse postOrder(@RequestBody Order order) {
         this.orderDao.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ApiResponse deleteChargingStation(@PathVariable Integer id) {
+    public ApiResponse deleteOrder(@PathVariable Integer id) {
         this.orderDao.deleteOrderFromDatabase(id);
         return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse updateChargingStation(@RequestBody Order order) {
+    public ApiResponse updateOrder(@RequestBody Order order) {
         this.orderDao.saveToDatabase(order);
         return new ApiResponse(HttpStatus.ACCEPTED, "You updated some data!");
     }
-
 }
