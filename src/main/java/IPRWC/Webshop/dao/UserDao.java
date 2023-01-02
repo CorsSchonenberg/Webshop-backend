@@ -2,9 +2,11 @@ package IPRWC.Webshop.dao;
 
 import IPRWC.Webshop.model.PromoCode;
 import IPRWC.Webshop.model.User;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+@Component
 public class UserDao {
     private final UserRepository userRepository;
 

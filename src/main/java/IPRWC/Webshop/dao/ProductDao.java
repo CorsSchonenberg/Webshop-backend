@@ -2,9 +2,11 @@ package IPRWC.Webshop.dao;
 
 import IPRWC.Webshop.model.Order;
 import IPRWC.Webshop.model.Product;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 
+@Component
 public class ProductDao {
     private final ProductRepository productRepository;
 
