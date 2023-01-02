@@ -8,11 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "user")
+@Table(name = "Product")
 public class Product {
     @Id
-    private int id;
+    private Integer id;
     private String url;
-    private double price;
+    private Double price;
     private String description;
 }

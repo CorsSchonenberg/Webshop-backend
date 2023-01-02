@@ -1,6 +1,7 @@
 package IPRWC.Webshop.model;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Getter
@@ -9,11 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "User")
-public class User {
+@Table(name = "Order")
+public class Order {
     @Id
     private Integer id;
-    private String email;
-    private String password;
-
+    private Integer productId;
+    private Integer productAmount;
+    private Integer userId;
 }

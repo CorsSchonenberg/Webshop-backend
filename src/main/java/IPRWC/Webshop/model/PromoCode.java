@@ -9,11 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "User")
-public class User {
+@Table(name = "Promocode")
+public class PromoCode {
     @Id
     private Integer id;
-    private String email;
-    private String password;
-
+    private Double discount;
+    private String code;
 }
