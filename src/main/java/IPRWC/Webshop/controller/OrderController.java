@@ -1,9 +1,13 @@
 package IPRWC.Webshop.controller;
 
 import IPRWC.Webshop.dao.OrderDao;
+import IPRWC.Webshop.model.ApiResponse;
+import IPRWC.Webshop.model.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping(value = "/api/v1/order")
@@ -13,6 +17,34 @@ public class OrderController {
 
     public OrderController(OrderDao orderDao) {
         this.orderDao = orderDao;
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    @ResponseBody
+    public ApiResponse<ArrayList<Order>> orders() {
+        ArrayList<Order> orders = this.orderDao.getAllOrders();
+        return new ApiResponse(HttpStatus.ACCEPTED, orders);
+    }
+
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public ApiResponse postChargingstation(@RequestBody Order order) {
+        this.orderDao.saveToDatabase(order);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ApiResponse deleteChargingStation(@PathVariable Integer id) {
+        this.orderDao.deleteOrderFromDatabase(id);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @ResponseBody
+    public ApiResponse updateChargingStation(@RequestBody Order order) {
+        this.orderDao.saveToDatabase(order);
+        return new ApiResponse(HttpStatus.ACCEPTED, "You updated some data!");
     }
 
 }
