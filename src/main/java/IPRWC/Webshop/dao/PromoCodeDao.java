@@ -20,6 +20,4 @@ public class PromoCodeDao {
     public void deleteCodeFromDatabase(Integer id) {
         this.promoCodeRepository.deleteById(id);
     }
-
-
 }
