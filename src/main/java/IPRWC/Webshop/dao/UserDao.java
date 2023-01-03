@@ -1,10 +1,10 @@
 package IPRWC.Webshop.dao;
 
-import IPRWC.Webshop.model.PromoCode;
 import IPRWC.Webshop.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Component
 public class UserDao {
@@ -22,5 +22,17 @@ public class UserDao {
     }
     public void deleteUserFromDatabase(Integer id) {
         this.userRepository.deleteById(id);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
+
+        for (User user : users) {
+            if (user.getEmail().contains(email)) {
+
+                return Optional.ofNullable(user);
+            }
+        }
+        return Optional.empty();
     }
 }

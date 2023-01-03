@@ -1,6 +1,5 @@
 package IPRWC.Webshop.model;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -8,12 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
-@Table(name = "person")
-public class User {
-    @Id
-    private Integer id;
+public class LoginCredentials {
     private String email;
     private String password;
-
 }

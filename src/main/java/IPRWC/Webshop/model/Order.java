@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "Order")
+@Table(name = "delivery")
 public class Order {
     @Id
     private Integer id;
