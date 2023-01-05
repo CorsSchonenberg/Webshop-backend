@@ -1,6 +1,8 @@
 package IPRWC.Webshop.dao;
 
+import IPRWC.Webshop.model.PromoCode;
 import IPRWC.Webshop.model.User;
+import IPRWC.Webshop.service.ReturnNewIdService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,9 +11,11 @@ import java.util.Optional;
 @Component
 public class UserDao {
     private final UserRepository userRepository;
+    private final ReturnNewIdService returnNewIdService;
 
-    public UserDao(UserRepository userRepository) {
+    public UserDao(UserRepository userRepository, ReturnNewIdService returnNewIdService) {
         this.userRepository = userRepository;
+        this.returnNewIdService = returnNewIdService;
     }
 
     public void saveToDatabase(User user) {
@@ -34,5 +38,11 @@ public class UserDao {
             }
         }
         return Optional.empty();
+    }
+
+    public int giveUserNewId() {
+        ArrayList<User> users =
+                (ArrayList<User>) this.userRepository.findAll();
+        return this.returnNewIdService.returnNewUserId(users);
     }
 }
