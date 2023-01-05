@@ -5,6 +5,7 @@ import IPRWC.Webshop.model.ApiResponse;
 import IPRWC.Webshop.model.LoginCredentials;
 import IPRWC.Webshop.model.User;
 import IPRWC.Webshop.security.JWTUtil;
+import IPRWC.Webshop.service.InvalidMailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,27 +29,46 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public AuthController(UserDao userDao, JWTUtil jwtUtil, AuthenticationManager authManager, PasswordEncoder passwordEncoder) {
+    private final InvalidMailService invalidMailService;
+
+    public AuthController(UserDao userDao, JWTUtil jwtUtil, AuthenticationManager authManager, PasswordEncoder passwordEncoder, InvalidMailService invalidMailService) {
         this.userDao = userDao;
         this.jwtUtil = jwtUtil;
         this.authManager = authManager;
         this.passwordEncoder = passwordEncoder;
+        this.invalidMailService = invalidMailService;
     }
 
     @PostMapping("/register")
     public Object registerHandler(@RequestBody User user) {
-        String encodedPass = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPass);
-        userDao.saveToDatabase(user);
-        return new ApiResponse(HttpStatus.ACCEPTED, jwtUtil.generateToken(user.getEmail()));
+        try {
+            if (invalidMailService.patternMatches(user.getEmail())) {
+                String encodedPass = passwordEncoder.encode(user.getPassword());
+                user.setPassword(encodedPass);
+                userDao.saveToDatabase(user);
+                return new ApiResponse(HttpStatus.ACCEPTED, jwtUtil.generateToken(user.getEmail()));
+            } else {
+                return new ApiResponse(HttpStatus.BAD_REQUEST, "Invalid email");
+            }
+        } catch (Exception e) {
+            return new ApiResponse(HttpStatus.BAD_REQUEST, "Email already in use");
+        }
     }
 
     @PostMapping("/login")
     public Object loginHandler(@RequestBody LoginCredentials body) {
-        UsernamePasswordAuthenticationToken authInputToken =
-                new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
-        authManager.authenticate(authInputToken);
-        return new ApiResponse(HttpStatus.ACCEPTED, jwtUtil.generateToken(body.getEmail()));
+        try {
+            if (invalidMailService.patternMatches(body.getEmail())) {
+                UsernamePasswordAuthenticationToken authInputToken =
+                        new UsernamePasswordAuthenticationToken(body.getEmail(), body.getPassword());
+                authManager.authenticate(authInputToken);
+                return new ApiResponse(HttpStatus.ACCEPTED, jwtUtil.generateToken(body.getEmail()));
+            } else {
+                return new ApiResponse(HttpStatus.BAD_REQUEST, "Invalid email");
+            }
+        } catch (AuthenticationException authExc) {
+            return new ApiResponse(HttpStatus.UNAUTHORIZED, "Invalid email/password");
+        }
     }
 
 

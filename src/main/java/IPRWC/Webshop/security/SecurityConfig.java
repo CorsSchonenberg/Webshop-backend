@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/order/**").permitAll()
                 .requestMatchers("/api/v1/promocode/**").permitAll()
                 .requestMatchers("/api/v1/product/**").permitAll()
+                .requestMatchers("/api/v1/nextid/**").permitAll()
                 .and()
                 .userDetailsService(uds)
                 .exceptionHandling()
