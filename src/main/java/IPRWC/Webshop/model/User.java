@@ -1,7 +1,11 @@
 package IPRWC.Webshop.model;
 
-import jakarta.persistence.*;
+
 import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -15,5 +19,7 @@ public class User {
     private Integer id;
     private String email;
     private String password;
+    private boolean isAdmin = false;
+    private String address;
 
 }

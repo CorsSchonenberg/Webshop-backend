@@ -40,9 +40,14 @@ public class ProductController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public ApiResponse deleteProduct(@PathVariable Integer id) {
-        this.productDao.deleteProductFromDatabase(id);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
+        if (this.productDao.isProductNotOutOfBounds(id)) {
+            this.productDao.deleteProductFromDatabase(id);
+            return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
+        } else {
+            return new ApiResponse(HttpStatus.BAD_REQUEST, "Index out of bounds");
+        }
     }
+
 
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody

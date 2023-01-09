@@ -1,7 +1,11 @@
 package IPRWC.Webshop.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Getter
 @Setter
 @AllArgsConstructor

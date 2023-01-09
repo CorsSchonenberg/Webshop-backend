@@ -43,6 +43,7 @@ public class AuthController {
     public Object registerHandler(@RequestBody User user) {
         try {
             if (invalidMailService.patternMatches(user.getEmail())) {
+
                 String encodedPass = passwordEncoder.encode(user.getPassword());
                 user.setPassword(encodedPass);
                 userDao.saveToDatabase(user);
