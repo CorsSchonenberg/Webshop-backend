@@ -1,8 +1,6 @@
 package IPRWC.Webshop.dao;
 
 import IPRWC.Webshop.model.Order;
-import IPRWC.Webshop.model.PromoCode;
-import IPRWC.Webshop.service.ReturnNewIdService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -11,11 +9,9 @@ import java.util.ArrayList;
 public class OrderDao {
 
     private final OrderRepository orderRepository;
-    private final ReturnNewIdService returnNewIdService;
 
-    public OrderDao(OrderRepository orderRepository, ReturnNewIdService returnNewIdService) {
+    public OrderDao(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.returnNewIdService = returnNewIdService;
     }
 
     public void saveToDatabase(Order order) {
@@ -28,9 +24,5 @@ public class OrderDao {
         this.orderRepository.deleteById(id);
     }
 
-    public int giveOrderNewId() {
-        ArrayList<Order> orders =
-                (ArrayList<Order>) this.orderRepository.findAll();
-        return this.returnNewIdService.returnNewOrderId(orders);
-    }
+
 }
