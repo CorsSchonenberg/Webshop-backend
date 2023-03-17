@@ -1,6 +1,5 @@
 package IPRWC.Webshop.controller;
 
-import IPRWC.Webshop.dao.OrderDao;
 import IPRWC.Webshop.dao.ProductDao;
 import IPRWC.Webshop.dao.ProductRepository;
 import IPRWC.Webshop.model.ApiResponse;
@@ -41,8 +40,8 @@ public class ProductController {
     @ResponseBody
     public ApiResponse deleteProduct(@PathVariable Integer id) {
         if (this.productDao.isProductNotOutOfBounds(id)) {
-            this.productDao.deleteProductFromDatabase(id);
-            return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
+            String responseMessage =this.productDao.switchActiveInDatabase(id);
+            return new ApiResponse(HttpStatus.ACCEPTED, responseMessage);
         } else {
             return new ApiResponse(HttpStatus.BAD_REQUEST, "Index out of bounds");
         }

@@ -18,4 +18,5 @@ public class Product {
     private String url;
     private Double price;
     private String description;
+    private boolean isActive;
 }
