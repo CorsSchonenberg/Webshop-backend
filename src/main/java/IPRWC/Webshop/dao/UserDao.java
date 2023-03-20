@@ -1,6 +1,7 @@
 package IPRWC.Webshop.dao;
 
 import IPRWC.Webshop.model.User;
+import IPRWC.Webshop.service.CheckIfUserIsAdminService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -9,9 +10,12 @@ import java.util.Optional;
 @Component
 public class UserDao {
     private final UserRepository userRepository;
+    private final CheckIfUserIsAdminService checkIfUserIsAdminService;
 
-    public UserDao(UserRepository userRepository) {
+    public UserDao(UserRepository userRepository,
+                   CheckIfUserIsAdminService checkIfUserIsAdminService) {
         this.userRepository = userRepository;
+        this.checkIfUserIsAdminService = checkIfUserIsAdminService;
     }
 
     public void saveToDatabase(User user) {
@@ -34,5 +38,9 @@ public class UserDao {
             }
         }
         return Optional.empty();
+    }
+
+    public boolean isUserAdmin(Integer id){
+        return checkIfUserIsAdminService.IsUserAdmin(userRepository.findById(id));
     }
 }

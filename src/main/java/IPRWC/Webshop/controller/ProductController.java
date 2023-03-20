@@ -2,6 +2,7 @@ package IPRWC.Webshop.controller;
 
 import IPRWC.Webshop.dao.ProductDao;
 import IPRWC.Webshop.dao.ProductRepository;
+import IPRWC.Webshop.dao.UserDao;
 import IPRWC.Webshop.model.ApiResponse;
 import IPRWC.Webshop.model.Order;
 import IPRWC.Webshop.model.Product;
@@ -16,10 +17,11 @@ import java.util.ArrayList;
 @CrossOrigin("*")
 public class ProductController {
     private final ProductDao productDao;
+    private final UserDao userDao;
 
-    public ProductController(ProductDao productDao,
-                             ProductRepository productRepository) {
+    public ProductController(ProductDao productDao, UserDao userDao) {
         this.productDao = productDao;
+        this.userDao = userDao;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -29,16 +31,22 @@ public class ProductController {
         return new ApiResponse(HttpStatus.ACCEPTED, products);
     }
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @RequestMapping(value = "/{userId}/insert", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postProducts(@RequestBody Product product) {
+    public ApiResponse postProducts(@RequestBody Product product, @PathVariable Integer userId) {
+        if (!this.userDao.isUserAdmin(userId)){
+            return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to add new products");
+        }
         this.productDao.saveToDatabase(product);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{userId}/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ApiResponse deleteProduct(@PathVariable Integer id) {
+    public ApiResponse deleteProduct(@PathVariable Integer id, @PathVariable Integer userId) {
+        if (!this.userDao.isUserAdmin(userId)){
+            return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to delete products");
+        }
         if (this.productDao.isProductNotOutOfBounds(id)) {
             String responseMessage =this.productDao.switchActiveInDatabase(id);
             return new ApiResponse(HttpStatus.ACCEPTED, responseMessage);
@@ -48,9 +56,12 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{userId}/update", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse updateProduct(@RequestBody Product product) {
+    public ApiResponse updateProduct(@RequestBody Product product, @PathVariable Integer userId) {
+        if (!this.userDao.isUserAdmin(userId)){
+            return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to update products");
+        }
         this.productDao.saveToDatabase(product);
         return new ApiResponse(HttpStatus.ACCEPTED, "You updated some data!");
     }
