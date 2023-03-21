@@ -17,4 +17,5 @@ public class PromoCode {
     private Integer id;
     private Double discount;
     private String code;
+    private String name;
 }
