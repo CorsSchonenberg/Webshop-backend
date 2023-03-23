@@ -40,7 +40,7 @@ public class UserDao {
         return Optional.empty();
     }
 
-    public boolean isUserAdmin(Integer id){
-        return checkIfUserIsAdminService.IsUserAdmin(userRepository.findById(id));
+    public boolean isUserAdmin(User user){
+        return checkIfUserIsAdminService.IsUserAdmin(userRepository.findById(user.getId()));
     }
 }

@@ -6,11 +6,14 @@ import IPRWC.Webshop.dao.UserDao;
 import IPRWC.Webshop.model.ApiResponse;
 import IPRWC.Webshop.model.Order;
 import IPRWC.Webshop.model.Product;
+import IPRWC.Webshop.model.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/api/v1/product")
@@ -31,20 +34,24 @@ public class ProductController {
         return new ApiResponse(HttpStatus.ACCEPTED, products);
     }
 
-    @RequestMapping(value = "/{userId}/insert", method = RequestMethod.POST)
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postProducts(@RequestBody Product product, @PathVariable Integer userId) {
-        if (!this.userDao.isUserAdmin(userId)){
+    public ApiResponse postProducts(@RequestBody Product product) {
+        String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDao.findByEmail(email).get();
+        if (!this.userDao.isUserAdmin(user)){
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to add new products");
         }
         this.productDao.saveToDatabase(product);
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
-    @RequestMapping(value = "/{userId}/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ApiResponse deleteProduct(@PathVariable Integer id, @PathVariable Integer userId) {
-        if (!this.userDao.isUserAdmin(userId)){
+    public ApiResponse deleteProduct(@PathVariable Integer id) {
+        String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDao.findByEmail(email).get();
+        if (!this.userDao.isUserAdmin(user)){
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to delete products");
         }
         if (this.productDao.isProductNotOutOfBounds(id)) {
@@ -56,10 +63,12 @@ public class ProductController {
     }
 
 
-    @RequestMapping(value = "/{userId}/update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
-    public ApiResponse updateProduct(@RequestBody Product product, @PathVariable Integer userId) {
-        if (!this.userDao.isUserAdmin(userId)){
+    public ApiResponse updateProduct(@RequestBody Product product) {
+        String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userDao.findByEmail(email).get();
+        if (!this.userDao.isUserAdmin(user)){
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to update products");
         }
         this.productDao.saveToDatabase(product);
