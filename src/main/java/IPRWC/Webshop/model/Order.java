@@ -19,4 +19,5 @@ public class Order {
     private Integer productId;
     private Integer productAmount;
     private Integer userId;
+    private Double price;
 }

@@ -29,6 +29,9 @@ public class OrderController {
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse postOrder(@RequestBody ArrayList<Order> orders) {
+        if (orders.size() < 1) {
+            return new ApiResponse(HttpStatus.BAD_REQUEST, "You do not have items in your cart!");
+        }
         for (Order order : orders) {
             this.orderDao.saveToDatabase(order);
         }
