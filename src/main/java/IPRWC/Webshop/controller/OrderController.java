@@ -28,8 +28,10 @@ public class OrderController {
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse postOrder(@RequestBody Order order) {
-        this.orderDao.saveToDatabase(order);
+    public ApiResponse postOrder(@RequestBody ArrayList<Order> orders) {
+        for (Order order : orders) {
+            this.orderDao.saveToDatabase(order);
+        }
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
     }
 
