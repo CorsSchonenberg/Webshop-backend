@@ -31,7 +31,7 @@ public class PromoCodeController {
     public ApiResponse<ArrayList<Order>> promoCodes() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDao.findByEmail(email).get();
-        if (!this.userDao.isUserAdmin(user)){
+        if (!this.userDao.isUserAdmin(user)) {
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to get all promocodes");
         }
         ArrayList<PromoCode> promoCodes = this.promoCodeDao.getAllCodes();
@@ -43,7 +43,7 @@ public class PromoCodeController {
     public ApiResponse postPromoCodes(@RequestBody PromoCode promoCode) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDao.findByEmail(email).get();
-        if (!this.userDao.isUserAdmin(user)){
+        if (!this.userDao.isUserAdmin(user)) {
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to add new promocodes");
         }
         this.promoCodeDao.saveToDatabase(promoCode);
@@ -55,28 +55,16 @@ public class PromoCodeController {
     public ApiResponse deletePromoCode(@PathVariable Integer id) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userDao.findByEmail(email).get();
-        if (!this.userDao.isUserAdmin(user)){
+        if (!this.userDao.isUserAdmin(user)) {
             return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to delete promocodes");
         }
         this.promoCodeDao.deleteCodeFromDatabase(id);
         return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    @ResponseBody
-    public ApiResponse updatePromoCode(@RequestBody PromoCode promoCode) {
-        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userDao.findByEmail(email).get();
-        if (!this.userDao.isUserAdmin(user)){
-            return new ApiResponse(HttpStatus.UNAUTHORIZED, "Only Admins Are Allowed to update promocodes");
-        }
-        this.promoCodeDao.saveToDatabase(promoCode);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You updated some data!");
-    }
-
     @RequestMapping(value = "/checker", method = RequestMethod.POST)
     @ResponseBody
-    public ApiResponse individualCode(@RequestBody String code){
+    public ApiResponse individualCode(@RequestBody String code) {
         Optional<PromoCode> validPromoCode = this.checkIfPromoCodeISValid.checkIfPromoCodeIsValid(code);
         if (validPromoCode.isPresent()) {
             return new ApiResponse(HttpStatus.ACCEPTED, validPromoCode);

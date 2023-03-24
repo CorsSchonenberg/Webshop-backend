@@ -19,13 +19,6 @@ public class OrderController {
         this.orderDao = orderDao;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ResponseBody
-    public ApiResponse<ArrayList<Order>> orders() {
-        ArrayList<Order> orders = this.orderDao.getAllOrders();
-        return new ApiResponse(HttpStatus.ACCEPTED, orders);
-    }
-
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
     @ResponseBody
     public ApiResponse postOrder(@RequestBody ArrayList<Order> orders) {
@@ -36,19 +29,5 @@ public class OrderController {
             this.orderDao.saveToDatabase(order);
         }
         return new ApiResponse(HttpStatus.ACCEPTED, "You posted some data!");
-    }
-
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public ApiResponse deleteOrder(@PathVariable Integer id) {
-        this.orderDao.deleteOrderFromDatabase(id);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You deleted some data!");
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    @ResponseBody
-    public ApiResponse updateOrder(@RequestBody Order order) {
-        this.orderDao.saveToDatabase(order);
-        return new ApiResponse(HttpStatus.ACCEPTED, "You updated some data!");
     }
 }
