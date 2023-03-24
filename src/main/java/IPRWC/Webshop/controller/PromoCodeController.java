@@ -1,7 +1,5 @@
 package IPRWC.Webshop.controller;
 
-import IPRWC.Webshop.dao.ProductDao;
-import IPRWC.Webshop.dao.ProductRepository;
 import IPRWC.Webshop.dao.PromoCodeDao;
 import IPRWC.Webshop.dao.UserDao;
 import IPRWC.Webshop.model.*;

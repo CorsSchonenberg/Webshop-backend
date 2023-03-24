@@ -1,7 +1,6 @@
 package IPRWC.Webshop.controller;
 
 import IPRWC.Webshop.dao.ProductDao;
-import IPRWC.Webshop.dao.ProductRepository;
 import IPRWC.Webshop.dao.UserDao;
 import IPRWC.Webshop.model.ApiResponse;
 import IPRWC.Webshop.model.Order;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/api/v1/product")
