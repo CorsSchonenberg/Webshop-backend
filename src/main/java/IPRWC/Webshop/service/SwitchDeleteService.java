@@ -11,7 +11,6 @@ import java.util.Optional;
 public class SwitchDeleteService {
 
     public Product switchActiveFromProduct(ArrayList<Product> products, Integer id){
-        System.out.println(id);
         for (Product product : products) {
             if (product.getId().equals(id)) {
                 product.setActive(!product.isActive());
