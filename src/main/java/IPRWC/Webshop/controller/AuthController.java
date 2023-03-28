@@ -41,6 +41,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public Object registerHandler(@RequestBody User user) {
+        user.setAdmin(false);
         try {
             if (invalidMailService.patternMatches(user.getEmail())) {
 
