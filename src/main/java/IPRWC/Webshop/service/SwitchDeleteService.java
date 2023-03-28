@@ -17,7 +17,6 @@ public class SwitchDeleteService {
                 return product;
             }
         }
-        System.out.println("Test");
         return null;
 
     }
